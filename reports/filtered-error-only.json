@@ -1,0 +1,21 @@
+[ {
+  "timestamp" : "2025-07-11T10:01:17",
+  "level" : "ERROR",
+  "message" : "DB connection timeout",
+  "metadata" : ""
+}, {
+  "timestamp" : "2025-07-11T10:03:12",
+  "level" : "ERROR",
+  "message" : "DB deadlock detected",
+  "metadata" : ""
+}, {
+  "timestamp" : "2025-07-11T10:06:10",
+  "level" : "ERROR",
+  "message" : "High CPU usage detected",
+  "metadata" : ""
+}, {
+  "timestamp" : "2025-07-11T10:07:22",
+  "level" : "ERROR",
+  "message" : "Memory leak suspected",
+  "metadata" : ""
+} ]

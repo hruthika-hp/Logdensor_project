@@ -1,0 +1,6 @@
+com\logdensor\model\LogEntryTest.class
+com\logdensor\parser\LogParserTest.class
+com\logdensor\processor\LogProcessorTest.class
+com\logdensor\filter\LogFilterTest.class
+com\logdensor\metrics\MetricsServiceTest.class
+com\logdensor\report\ReportGeneratorTest.class

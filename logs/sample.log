@@ -1,0 +1,11 @@
+[2025-07-11 10:01:15] INFO: User login success - userId=1234
+[2025-07-11 10:01:17] ERROR: DB connection timeout
+[2025-07-11 10:01:20] INFO: User logout - userId=1234
+[2025-07-11 10:02:05] WARN: Payment delay detected
+[2025-07-11 10:03:12] ERROR: DB deadlock detected
+[2025-07-11 10:04:01] INFO: Job created successfully
+[2025-07-11 10:05:45] DEBUG: Background task started
+[2025-07-11 10:06:10] ERROR: High CPU usage detected
+[2025-07-11 10:07:22] ERROR: Memory leak suspected
+[2025-07-11 10:08:00] INFO: User login success - userId=5678
+[2025-07-11 10:10:15] INFO: User logout - userId=5678
