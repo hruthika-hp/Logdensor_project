@@ -1,6 +1,5 @@
 package com.logdensor.filter;
 
-import com.logdensor.model.FilterCriteria;
 import com.logdensor.model.LogEntry;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +15,8 @@ public class LogFilterTest {
     public void testFilterByLevel() {
         LogFilter filter = new LogFilter();
         List<LogEntry> logs = Arrays.asList(
-            new LogEntry(LocalDateTime.now(), "INFO", "Some info", ""),
-            new LogEntry(LocalDateTime.now(), "ERROR", "Some error", "")
+                new LogEntry(LocalDateTime.now(), "INFO", "Some info"),
+                new LogEntry(LocalDateTime.now(), "ERROR", "Some error")
         );
 
         FilterCriteria criteria = new FilterCriteria();

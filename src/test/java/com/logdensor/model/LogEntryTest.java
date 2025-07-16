@@ -11,11 +11,10 @@ public class LogEntryTest {
     @Test
     public void testLogEntryCreation() {
         LocalDateTime now = LocalDateTime.now();
-        LogEntry entry = new LogEntry(now, "INFO", "User login", "userId=101");
+        LogEntry entry = new LogEntry(now, "INFO", "Test message");
 
         assertEquals("INFO", entry.getLevel());
-        assertEquals("User login", entry.getMessage());
-        assertEquals("userId=101", entry.getMetadata());
+        assertEquals("Test message", entry.getMessage());
         assertEquals(now, entry.getTimestamp());
     }
 }

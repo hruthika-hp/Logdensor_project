@@ -4,51 +4,61 @@ import java.util.List;
 import java.util.Map;
 
 public class MetricsReport {
-    private Map<String, Integer> logLevelCounts;
-    private List<FrequentError> frequentErrorMessages;
-    private List<Anomaly> anomalies;
+
+    private Map<String, Long> levelCounts;
     private List<PeakHour> peakHours;
-    private List<LoginSession> loginLogoutDurations;
+    private List<String> frequentErrors;
+    private List<LoginSession> loginSessions;
+    private List<Anomaly> anomalies;
 
-    public Map<String, Integer> getLogLevelCounts() { return logLevelCounts; }
-    public List<FrequentError> getFrequentErrorMessages() { return frequentErrorMessages; }
-    public List<Anomaly> getAnomalies() { return anomalies; }
-    public List<PeakHour> getPeakHours() { return peakHours; }
-    public List<LoginSession> getLoginLogoutDurations() { return loginLogoutDurations; }
-
-    public void setLogLevelCounts(Map<String, Integer> logLevelCounts) {
-        this.logLevelCounts = logLevelCounts;
+    public Map<String, Long> getLevelCounts() {
+        return levelCounts;
     }
 
-    public void setFrequentErrorMessages(List<FrequentError> frequentErrorMessages) {
-        this.frequentErrorMessages = frequentErrorMessages;
+    public void setLevelCounts(Map<String, Long> levelCounts) {
+        this.levelCounts = levelCounts;
     }
 
-    public void setAnomalies(List<Anomaly> anomalies) {
-        this.anomalies = anomalies;
+    public List<PeakHour> getPeakHours() {
+        return peakHours;
     }
 
     public void setPeakHours(List<PeakHour> peakHours) {
         this.peakHours = peakHours;
     }
 
-    public void setLoginLogoutDurations(List<LoginSession> loginLogoutDurations) {
-        this.loginLogoutDurations = loginLogoutDurations;
+    public List<String> getFrequentErrors() {
+        return frequentErrors;
     }
 
-    public static class FrequentError {
-        private String message;
-        private int count;
+    public void setFrequentErrors(List<String> frequentErrors) {
+        this.frequentErrors = frequentErrors;
+    }
 
-        public FrequentError(String message, int count) {
-            this.message = message;
-            this.count = count;
-        }
+    public List<LoginSession> getLoginSessions() {
+        return loginSessions;
+    }
 
-        public String getMessage() { return message; }
-        public int getCount() { return count; }
+    public void setLoginSessions(List<LoginSession> loginSessions) {
+        this.loginSessions = loginSessions;
+    }
 
-        public void setMessage(String message) { this.message = message; }
-        public void setCount(int count) { this.count = count; }
+    public List<Anomaly> getAnomalies() {
+        return anomalies;
+    }
+
+    public void setAnomalies(List<Anomaly> anomalies) {
+        this.anomalies = anomalies;
+    }
+
+    @Override
+    public String toString() {
+        return "MetricsReport{" +
+                "levelCounts=" + levelCounts +
+                ", peakHours=" + peakHours +
+                ", frequentErrors=" + frequentErrors +
+                ", loginSessions=" + loginSessions +
+                ", anomalies=" + anomalies +
+                '}';
     }
 }

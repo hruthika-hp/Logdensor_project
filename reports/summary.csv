@@ -1,5 +1,12 @@
-Log Level,Count
-ERROR,4
-INFO,6
-DEBUG,1
-WARN,1
+Metric,Value
+Log Level - ERROR,4
+Log Level - INFO,6
+Log Level - DEBUG,1
+Log Level - WARN,1
+Peak Hour - 2025-07-11 10,12
+Frequent Error 1,High CPU usage detected
+Frequent Error 2,DB connection timeout
+Frequent Error 3,Memory leak suspected
+Frequent Error 4,DB deadlock detected
+Login Session 1,User: INFO From: 2025-07-11T10:01:15 To: 2025-07-11T10:01:20
+Login Session 2,User: INFO From: 2025-07-11T10:08 To: 2025-07-11T10:10:15

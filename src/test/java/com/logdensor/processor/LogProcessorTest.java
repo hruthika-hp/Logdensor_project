@@ -3,8 +3,7 @@ package com.logdensor.processor;
 import com.logdensor.model.LogEntry;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,17 +11,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LogProcessorTest {
 
     @Test
-    public void testProcessLogs() throws Exception {
-        String testFilePath = "logs/test_sample.log";
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(testFilePath))) {
-            writer.write("[2025-07-11 10:01:15] INFO: Test log - userId=1\n");
+    public void testProcessFile() throws IOException {
+        File tempLog = File.createTempFile("test-log", ".log");
+        try (PrintWriter pw = new PrintWriter(tempLog)) {
+            pw.println("[2025-07-15 10:00:00] ERROR: Something went wrong");
         }
 
         LogProcessor processor = new LogProcessor();
-        processor.processLogs("logs");
+        processor.processLogs(tempLog.getParent());
 
-        List<LogEntry> logs = LogProcessor.parsedLogs;
-        assertTrue(logs.size() >= 1);
+        List<LogEntry> results = LogProcessor.parsedLogs;
+        assertFalse(results.isEmpty());
     }
 }

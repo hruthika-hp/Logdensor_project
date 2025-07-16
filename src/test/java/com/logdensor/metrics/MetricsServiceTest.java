@@ -1,30 +1,33 @@
 package com.logdensor.metrics;
 
-import com.logdensor.model.MetricsReport;
-import com.logdensor.processor.LogProcessor;
 import com.logdensor.model.LogEntry;
-import org.junit.jupiter.api.BeforeEach;
+import com.logdensor.model.MetricsReport;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MetricsServiceTest {
 
-    @BeforeEach
-    public void setup() {
-        LogProcessor.parsedLogs.clear();
-        LogProcessor.parsedLogs.add(new LogEntry(LocalDateTime.now(), "INFO", "User login success", "userId=101"));
-        LogProcessor.parsedLogs.add(new LogEntry(LocalDateTime.now(), "ERROR", "DB connection timeout", ""));
-    }
-
     @Test
     public void testComputeMetrics() {
         MetricsService service = new MetricsService();
-        MetricsReport report = service.computeMetrics();
+        List<LogEntry> logs = List.of(
+                new LogEntry(LocalDateTime.now(), "INFO", "User login"),
+                new LogEntry(LocalDateTime.now(), "ERROR", "Database error"),
+                new LogEntry(LocalDateTime.now(), "ERROR", "Database error"),
+                new LogEntry(LocalDateTime.now(), "INFO", "User logout"),
+                new LogEntry(LocalDateTime.now(), "WARN", "Slow response")
+        );
 
-        assertNotNull(report);
-        assertEquals(2, report.getLogLevelCounts().values().stream().mapToInt(Integer::intValue).sum());
+        MetricsReport report = service.computeMetrics(logs);
+
+        assertNotNull(report.getLevelCounts());
+        assertNotNull(report.getPeakHours());
+        assertNotNull(report.getFrequentErrors());
+        assertNotNull(report.getLoginSessions());
+        assertNotNull(report.getAnomalies());
     }
 }

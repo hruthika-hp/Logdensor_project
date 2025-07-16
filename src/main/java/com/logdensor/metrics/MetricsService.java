@@ -1,7 +1,10 @@
 package com.logdensor.metrics;
 
-import com.logdensor.model.*;
-import com.logdensor.processor.LogProcessor;
+import com.logdensor.model.Anomaly;
+import com.logdensor.model.LogEntry;
+import com.logdensor.model.LoginSession;
+import com.logdensor.model.MetricsReport;
+import com.logdensor.model.PeakHour;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,92 +12,88 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MetricsService {
-    public MetricsReport computeMetrics() {
-        List<LogEntry> logs = LogProcessor.parsedLogs;
+
+    public MetricsReport computeMetrics(List<LogEntry> logs) {
         MetricsReport report = new MetricsReport();
 
-        Map<String, Integer> levelCount = new HashMap<>();
-        Map<String, Integer> errorFreq = new HashMap<>();
-        Map<String, LocalDateTime> loginMap = new HashMap<>();
-        List<LoginSession> sessions = new ArrayList<>();
-        Map<String, Integer> hourMap = new HashMap<>();
-        List<Anomaly> anomalies = new ArrayList<>();
-
-        for (LogEntry log : logs) {
-            // a. Count by log level
-            levelCount.put(log.getLevel(), levelCount.getOrDefault(log.getLevel(), 0) + 1);
-
-            // b. Peak hours
-            String hour = log.getTimestamp().format(DateTimeFormatter.ofPattern("HH:00"));
-            hourMap.put(hour, hourMap.getOrDefault(hour, 0) + 1);
-
-            // c. Frequent errors
-            if ("ERROR".equalsIgnoreCase(log.getLevel())) {
-                errorFreq.put(log.getMessage(), errorFreq.getOrDefault(log.getMessage(), 0) + 1);
-            }
-
-            // d. Login/logout session
-            if (log.getMessage().toLowerCase().contains("login")) {
-                String userId = extractUserId(log.getMetadata());
-                loginMap.put(userId, log.getTimestamp());
-            } else if (log.getMessage().toLowerCase().contains("logout")) {
-                String userId = extractUserId(log.getMetadata());
-                if (loginMap.containsKey(userId)) {
-                    LocalDateTime login = loginMap.remove(userId);
-                    sessions.add(new LoginSession(userId, login, log.getTimestamp()));
-                }
-            }
-        }
-
-        // e. Anomaly detection: spike in ERRORs within 5 minutes
-        logs.sort(Comparator.comparing(LogEntry::getTimestamp));
-        for (int i = 0; i < logs.size(); i++) {
-            if (!"ERROR".equalsIgnoreCase(logs.get(i).getLevel())) continue;
-
-            int count = 1;
-            LocalDateTime start = logs.get(i).getTimestamp();
-
-            for (int j = i + 1; j < logs.size(); j++) {
-                if (!"ERROR".equalsIgnoreCase(logs.get(j).getLevel())) continue;
-
-                long minutes = java.time.Duration.between(start, logs.get(j).getTimestamp()).toMinutes();
-                if (minutes <= 5) {
-                    count++;
-                } else {
-                    break;
-                }
-            }
-
-            if (count >= 5) {
-                anomalies.add(new Anomaly(start, "Spike in ERRORs", "HIGH"));
-            }
-        }
-
-        // Final report fields
-        report.setLogLevelCounts(levelCount);
-
-        List<MetricsReport.FrequentError> errorList = errorFreq.entrySet()
-                .stream()
-                .map(e -> new MetricsReport.FrequentError(e.getKey(), e.getValue()))
-                .collect(Collectors.toList());
-        report.setFrequentErrorMessages(errorList);
-
-        List<PeakHour> peakHours = hourMap.entrySet()
-                .stream()
-                .map(e -> new PeakHour(e.getKey(), e.getValue()))
-                .collect(Collectors.toList());
-        report.setPeakHours(peakHours);
-
-        report.setLoginLogoutDurations(sessions);
-        report.setAnomalies(anomalies);
+        report.setLevelCounts(computeLogLevelCounts(logs));
+        report.setPeakHours(findPeakHours(logs));
+        report.setFrequentErrors(findFrequentErrors(logs));
+        report.setLoginSessions(calculateLoginDurations(logs));
+        report.setAnomalies(detectAnomalies(logs));
 
         return report;
     }
 
-    private String extractUserId(String metadata) {
-        if (metadata != null && metadata.contains("userId=")) {
-            return metadata.substring(metadata.indexOf("userId=") + 7).trim();
+    private Map<String, Long> computeLogLevelCounts(List<LogEntry> logs) {
+        return logs.stream()
+                .collect(Collectors.groupingBy(LogEntry::getLevel, Collectors.counting()));
+    }
+
+    private List<PeakHour> findPeakHours(List<LogEntry> logs) {
+        Map<String, Long> hourlyCount = logs.stream()
+                .filter(l -> l.getTimestamp() != null)
+                .collect(Collectors.groupingBy(
+                        l -> l.getTimestamp().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH")),
+                        Collectors.counting()
+                ));
+
+        return hourlyCount.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(3)
+                .map(e -> new PeakHour(e.getKey(), e.getValue()))
+                .toList();
+    }
+
+    private List<String> findFrequentErrors(List<LogEntry> logs) {
+        Map<String, Long> messageFreq = logs.stream()
+                .filter(l -> "ERROR".equalsIgnoreCase(l.getLevel()))
+                .collect(Collectors.groupingBy(LogEntry::getMessage, Collectors.counting()));
+
+        return messageFreq.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .map(Map.Entry::getKey)
+                .toList();
+    }
+
+    private List<LoginSession> calculateLoginDurations(List<LogEntry> logs) {
+        List<LoginSession> sessions = new ArrayList<>();
+        Map<String, LocalDateTime> loginTimes = new HashMap<>();
+
+        for (LogEntry log : logs) {
+            String level = log.getLevel();
+            String message = log.getMessage().toLowerCase();
+            LocalDateTime timestamp = log.getTimestamp();
+
+            if (message.contains("login")) {
+                loginTimes.put(level, timestamp);
+            } else if (message.contains("logout") && loginTimes.containsKey(level)) {
+                LocalDateTime loginTime = loginTimes.remove(level);
+                sessions.add(new LoginSession(level, loginTime, timestamp));
+            }
         }
-        return "unknown";
+
+        return sessions;
+    }
+
+    private List<Anomaly> detectAnomalies(List<LogEntry> logs) {
+        List<Anomaly> anomalies = new ArrayList<>();
+        Map<LocalDateTime, Long> errorCounts = new TreeMap<>();
+
+        for (LogEntry log : logs) {
+            if ("ERROR".equalsIgnoreCase(log.getLevel())) {
+                LocalDateTime minute = log.getTimestamp().withSecond(0).withNano(0);
+                errorCounts.put(minute, errorCounts.getOrDefault(minute, 0L) + 1);
+            }
+        }
+
+        for (Map.Entry<LocalDateTime, Long> entry : errorCounts.entrySet()) {
+            if (entry.getValue() >= 5) {
+                anomalies.add(new Anomaly(entry.getKey(), "ERROR", "High ERROR volume: " + entry.getValue()));
+            }
+        }
+
+        return anomalies;
     }
 }

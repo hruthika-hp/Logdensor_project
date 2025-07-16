@@ -1,0 +1,5 @@
+[ {
+  "timestamp" : [ 2025, 7, 11, 10, 5, 45 ],
+  "level" : "DEBUG",
+  "message" : "Background task started"
+} ]

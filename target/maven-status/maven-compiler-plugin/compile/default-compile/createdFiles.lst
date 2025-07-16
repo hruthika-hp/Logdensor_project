@@ -1,5 +1,4 @@
-com\logdensor\model\MetricsReport$FrequentError.class
-com\logdensor\filter\FilterCriteria$TimeRange.class
+com\logdensor\report\ReportGenerator$1.class
 com\logdensor\processor\LogProcessor.class
 com\logdensor\model\LoginSession.class
 com\logdensor\filter\FilterService.class

@@ -2,16 +2,26 @@ package com.logdensor.model;
 
 public class PeakHour {
     private String hour;
-    private int eventCount;
+    private long count;
 
-    public PeakHour(String hour, int eventCount) {
+    public PeakHour(String hour, long count) {
         this.hour = hour;
-        this.eventCount = eventCount;
+        this.count = count;
     }
 
-    public String getHour() { return hour; }
-    public int getEventCount() { return eventCount; }
+    public String getHour() {
+        return hour;
+    }
 
-    public void setHour(String hour) { this.hour = hour; }
-    public void setEventCount(int eventCount) { this.eventCount = eventCount; }
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
+    }
 }

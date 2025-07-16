@@ -4,20 +4,45 @@ import java.time.LocalDateTime;
 
 public class Anomaly {
     private LocalDateTime timestamp;
+    private String level;
     private String message;
-    private String severity;
 
-    public Anomaly(LocalDateTime timestamp, String message, String severity) {
+    public Anomaly(LocalDateTime timestamp, String level, String message) {
         this.timestamp = timestamp;
+        this.level = level;
         this.message = message;
-        this.severity = severity;
     }
 
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public String getMessage() { return message; }
-    public String getSeverity() { return severity; }
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
-    public void setMessage(String message) { this.message = message; }
-    public void setSeverity(String severity) { this.severity = severity; }
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "Anomaly{" +
+                "timestamp=" + timestamp +
+                ", level='" + level + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

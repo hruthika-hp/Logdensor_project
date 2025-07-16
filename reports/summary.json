@@ -1,37 +1,23 @@
 {
-  "logLevelCounts" : {
+  "levelCounts" : {
     "ERROR" : 4,
     "INFO" : 6,
     "DEBUG" : 1,
     "WARN" : 1
   },
-  "frequentErrorMessages" : [ {
-    "message" : "High CPU usage detected",
-    "count" : 1
-  }, {
-    "message" : "DB connection timeout",
-    "count" : 1
-  }, {
-    "message" : "DB deadlock detected",
-    "count" : 1
-  }, {
-    "message" : "Memory leak suspected",
-    "count" : 1
-  } ],
-  "anomalies" : [ ],
   "peakHours" : [ {
-    "hour" : "10:00",
-    "eventCount" : 12
+    "hour" : "2025-07-11 10",
+    "count" : 12
   } ],
-  "loginLogoutDurations" : [ {
-    "userId" : "1234",
-    "loginTime" : "2025-07-11T10:01:15",
-    "logoutTime" : "2025-07-11T10:01:20",
-    "durationSeconds" : 5
+  "frequentErrors" : [ "High CPU usage detected", "DB connection timeout", "Memory leak suspected", "DB deadlock detected" ],
+  "loginSessions" : [ {
+    "userId" : "INFO",
+    "loginTime" : [ 2025, 7, 11, 10, 1, 15 ],
+    "logoutTime" : [ 2025, 7, 11, 10, 1, 20 ]
   }, {
-    "userId" : "5678",
-    "loginTime" : "2025-07-11T10:08:00",
-    "logoutTime" : "2025-07-11T10:10:15",
-    "durationSeconds" : 135
-  } ]
+    "userId" : "INFO",
+    "loginTime" : [ 2025, 7, 11, 10, 8 ],
+    "logoutTime" : [ 2025, 7, 11, 10, 10, 15 ]
+  } ],
+  "anomalies" : [ ]
 }

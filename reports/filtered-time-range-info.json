@@ -3,37 +3,13 @@
   "level" : "INFO",
   "message" : "User login success - userId=1234"
 }, {
-  "timestamp" : [ 2025, 7, 11, 10, 1, 17 ],
-  "level" : "ERROR",
-  "message" : "DB connection timeout"
-}, {
   "timestamp" : [ 2025, 7, 11, 10, 1, 20 ],
   "level" : "INFO",
   "message" : "User logout - userId=1234"
 }, {
-  "timestamp" : [ 2025, 7, 11, 10, 2, 5 ],
-  "level" : "WARN",
-  "message" : "Payment delay detected"
-}, {
-  "timestamp" : [ 2025, 7, 11, 10, 3, 12 ],
-  "level" : "ERROR",
-  "message" : "DB deadlock detected"
-}, {
   "timestamp" : [ 2025, 7, 11, 10, 4, 1 ],
   "level" : "INFO",
   "message" : "Job created successfully"
-}, {
-  "timestamp" : [ 2025, 7, 11, 10, 5, 45 ],
-  "level" : "DEBUG",
-  "message" : "Background task started"
-}, {
-  "timestamp" : [ 2025, 7, 11, 10, 6, 10 ],
-  "level" : "ERROR",
-  "message" : "High CPU usage detected"
-}, {
-  "timestamp" : [ 2025, 7, 11, 10, 7, 22 ],
-  "level" : "ERROR",
-  "message" : "Memory leak suspected"
 }, {
   "timestamp" : [ 2025, 7, 11, 10, 8 ],
   "level" : "INFO",

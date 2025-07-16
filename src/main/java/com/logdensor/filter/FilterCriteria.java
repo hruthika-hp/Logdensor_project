@@ -1,16 +1,17 @@
 package com.logdensor.filter;
 
 public class FilterCriteria {
-    private String level;
+    private String logLevel;
     private String tag;
-    private TimeRange timeRange;
+    private String startTime;
+    private String endTime;
 
-    public String getLevel() {
-        return level;
+    public String getLogLevel() {
+        return logLevel;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setLogLevel(String logLevel) {
+        this.logLevel = logLevel;
     }
 
     public String getTag() {
@@ -21,41 +22,19 @@ public class FilterCriteria {
         this.tag = tag;
     }
 
-    public TimeRange getTimeRange() {
-        return timeRange;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setTimeRange(TimeRange timeRange) {
-        this.timeRange = timeRange;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    // Inner class for time range
-    public static class TimeRange {
-        private String start;
-        private String end;
+    public String getEndTime() {
+        return endTime;
+    }
 
-        public TimeRange() {}
-
-        public TimeRange(String start, String end) {
-            this.start = start;
-            this.end = end;
-        }
-
-        public String getStart() {
-            return start;
-        }
-
-        public void setStart(String start) {
-            this.start = start;
-        }
-
-        public String getEnd() {
-            return end;
-        }
-
-        public void setEnd(String end) {
-            this.end = end;
-        }
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }
-

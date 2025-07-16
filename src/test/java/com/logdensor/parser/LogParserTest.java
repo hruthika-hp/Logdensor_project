@@ -3,31 +3,24 @@ package com.logdensor.parser;
 import com.logdensor.model.LogEntry;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogParserTest {
 
     @Test
-    public void testParseValidLogLine() {
+    public void testValidLogParsing() {
         LogParser parser = new LogParser();
-        String line = "[2025-07-11 10:01:15] INFO: User login success - userId=1234";
+        String line = "[2025-07-15 10:01:00] INFO: User logged in";
 
         LogEntry entry = parser.parse(line);
-
         assertNotNull(entry);
         assertEquals("INFO", entry.getLevel());
-        assertTrue(entry.getMessage().contains("User login success"));
-        assertEquals("userId=1234", entry.getMetadata());
+        assertEquals("User logged in", entry.getMessage());
     }
 
     @Test
-    public void testParseInvalidLogLine() {
+    public void testInvalidLogLine() {
         LogParser parser = new LogParser();
-        String line = "Malformed log entry";
-
-        LogEntry entry = parser.parse(line);
-
-        assertNull(entry);
+        assertNull(parser.parse("Invalid log line"));
     }
 }
